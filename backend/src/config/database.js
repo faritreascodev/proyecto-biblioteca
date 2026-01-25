@@ -1,11 +1,16 @@
 const { Pool } = require('pg');
 
+// Configuración que funciona tanto en Railway como en local
 const pool = new Pool({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    // Si existe DATABASE_URL (Railway), se usa. Si no, van las variables individuales (Docker local)
+    connectionString: process.env.DATABASE_URL,
+    host: process.env.DATABASE_URL ? undefined : process.env.DB_HOST,
+    port: process.env.DATABASE_URL ? undefined : process.env.DB_PORT,
+    user: process.env.DATABASE_URL ? undefined : process.env.DB_USER,
+    password: process.env.DATABASE_URL ? undefined : process.env.DB_PASSWORD,
+    database: process.env.DATABASE_URL ? undefined : process.env.DB_NAME,
+    // Railway requiere SSL en producción
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 pool.on('connect', () => {
