@@ -6,9 +6,9 @@ ON CONFLICT (username) DO NOTHING;
 
 -- alguns libros de prueba
 INSERT INTO libros (titulo, autor, isbn, anio_publicacion, editorial, descripcion, imagen) VALUES
-('Cien años de soledad', 'Gabriel García Márquez', '978-0307474728', 1967, 'Editorial Sudamericana', 'Obra maestra del realismo mágico que narra la historia de la familia Buendía en el pueblo ficticio de Macondo.', 'https://anterior.mrbooks.com/mrbooks/portadas/9789588886213.webp?w=400'),
+('Cien años de soledad', 'Gabriel García Márquez', '978-0307474728', 1967, 'Editorial Sudamericana', 'Obra maestra del realismo mágico que narra la historia de la familia Buendía en el pueblo ficticio de Macondo.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Cien_a%C3%B1os_de_soledad.png/250px-Cien_a%C3%B1os_de_soledad.png?w=400'),
 ('Don Quijote de la Mancha', 'Miguel de Cervantes', '978-8491050452', 1605, 'Francisco de Robles', 'Clásico de la literatura española que relata las aventuras del ingenioso hidalgo.', 'https://images-na.ssl-images-amazon.com/images/I/61HOpyVqSeL.jpg?w=400'),
-('1984', 'George Orwell', '978-0451524935', 1949, 'Secker & Warburg', 'Novela distópica sobre un futuro totalitario donde el Gran Hermano vigila constantemente.', 'https://images.cdn1.buscalibre.com/fit-in/360x360/c9/ee/c9eef0bafc045010bfc431812ea5bbf8.jpg?w=400'),
+('1984', 'George Orwell', '978-0451524935', 1949, 'Secker & Warburg', 'Novela distópica sobre un futuro totalitario donde el Gran Hermano vigila constantemente.', 'https://upload.wikimedia.org/wikipedia/commons/5/51/1984_first_edition_cover.jpg?w=400'),
 ('El principito', 'Antoine de Saint-Exupéry', '978-0156012195', 1943, 'Reynal & Hitchcock', 'Cuento poético que narra las aventuras de un pequeño príncipe que visita varios planetas.', 'https://online.fliphtml5.com/ilypf/stri/files/large/1.webp?1601836779?w=400'),
 ('Rayuela', 'Julio Cortázar', '978-8420471648', 1963, 'Editorial Sudamericana', 'Novela experimental de la literatura latinoamericana con estructura no lineal.', 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Rayuela_JC.png?w=400')
 ON CONFLICT (isbn) DO NOTHING;
