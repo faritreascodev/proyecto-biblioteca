@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIGLE – Sistema de Gestión de Biblioteca</title>
+
+    <style>
+      :root {
+        --bg: #f5f5f5;
+        --panel: #ffffff;
+        --text: #212121;
+        --muted: #757575;
+        --border: #e0e0e0;
+        --accent: #2196f3;
+        --accent-hover: #1976d2;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      main {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        max-width: 680px;
+        width: 100%;
+        padding: 40px;
+      }
+
+      header {
+        margin-bottom: 32px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        color: var(--accent);
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 1rem;
+        max-width: 520px;
+      }
+
+      .divider {
+        border-top: 1px solid var(--border);
+        margin: 32px 0;
+      }
+
+      .features {
+        display: grid;
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .feature strong {
+        display: block;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+      }
+
+      .feature small {
+        color: var(--muted);
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+
+      .cta {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 14px 24px;
+        border: none;
+        color: #ffffff;
+        background: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        margin-bottom: 20px;
+        border-radius: 4px;
+        transition:
+          background 0.3s ease,
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+        cursor: pointer;
+      }
+
+      .cta:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px); /* ligero “levantar” */
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3); /* sombra sutil */
+        color: #ffffff; /* mantener el texto blanco */
+      }
+
+      .cta:active {
+        transform: translateY(0); /* vuelve al normal al hacer clic */
+        box-shadow: 0 2px 6px rgba(33, 150, 243, 0.2);
+      }
+
+      .meta {
+        display: flex; /* para alinear badges horizontalmente */
+        justify-content: flex-start; /* alineación izquierda */
+        gap: 12px; /* espacio entre badges */
+        flex-wrap: wrap; /* para pantallas pequeñas */
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 24px;
+      }
+
+      .meta span {
+        border: 1px solid var(--border);
+        background: #fafafa;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      .links {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
+
+      .links a {
+        font-size: 0.85rem;
+        color: var(--text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        font-style: italic;
+        transition: opacity 0.2s;
+      }
+
+      .links a:hover {
+        opacity: 0.7;
+      }
+
+      .version {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+
+      footer {
+        margin-top: 32px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      footer p {
+        margin-bottom: 4px;
+      }
+
+      footer strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 12px;
+        }
+
+        main {
+          padding: 24px 20px;
+        }
+
+        .features {
+          gap: 14px;
+        }
+
+        .cta {
+          padding: 12px 20px;
+        }
+
+        .meta {
+          gap: 8px;
+        }
+
+        .meta span {
+          font-size: 0.75rem;
+          padding: 5px 10px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        main {
+          padding: 20px 16px;
+        }
+
+        h1 {
+          letter-spacing: 0;
+        }
+
+        .brand-suffix {
+          font-size: 0.85rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <header>
+        <h1>SIGLE <span class="meta"> By RT Systems</span></h1>
+        <p class="subtitle">
+          Sistema integral para la gestión de libros y estudiantes.
+        </p>
+      </header>
+
+      <div class="divider"></div>
+
+      <section class="features">
+        <div class="feature">
+          <strong>Gestión de libros</strong>
+          <small>Administración estructurada del catálogo bibliográfico.</small>
+        </div>
+
+        <div class="feature">
+          <strong>Control de estudiantes</strong>
+          <small>Registro, seguimiento y organización de usuarios.</small>
+        </div>
+
+        <div class="feature">
+          <strong>Búsqueda eficiente</strong>
+          <small>Acceso rápido a libros y registros relevantes.</small>
+        </div>
+
+        <div class="feature">
+          <strong>Acceso multiplataforma</strong>
+          <small>Disponible desde dispositivos móviles y web.</small>
+        </div>
+      </section>
+
+      <a href="/downloads/biblioteca.apk" class="cta" download>
+        Descargar aplicación para Android
+      </a>
+
+      <div class="links">
+        <a
+          href="https://biblioteca-flutter.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Acceder a la versión web
+        </a>
+      </div>
+
+      <p class="version">Proyecto de Desarrollo Móvil</p>
+
+      <div class="meta">
+        <span>Android 5.0+</span>
+        <span>≈ 48 MB</span>
+        <span>Gratuita</span>
+      </div>
+
+      <footer>
+        <p><strong>Farit Alexander Reasco Torres</strong></p>
+        <p>Reasco Torres Systems © 2026</p>
+        <p>PUCE-SE · Desarrollo de software · 2026</p>
+      </footer>
+    </main>
+  </body>
+</html>
