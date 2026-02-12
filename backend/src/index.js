@@ -25,7 +25,13 @@ app.use(cors({
     credentials: true
 }));
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./config/swagger');
+
 app.use(express.json({ limit: '50mb' }))
+
+// Documentación Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // Servir archivos estáticos (landing page y APK)
 app.use(express.static(path.join(__dirname, '../public')));
