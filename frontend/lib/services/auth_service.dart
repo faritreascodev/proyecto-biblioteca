@@ -39,6 +39,30 @@ class AuthService {
     }
   }
 
+  // registro
+  Future<Map<String, dynamic>> register(String username, String password) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/register'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'username': username, 'password': password}),
+      );
+
+      if (response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        return {'success': true, 'message': data['message']};
+      } else {
+        final error = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': error['error'] ?? 'Error al registrar usuario',
+        };
+      }
+    } catch (e) {
+      return {'success': false, 'message': 'Error de conexión: $e'};
+    }
+  }
+
   // get token guardado
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();

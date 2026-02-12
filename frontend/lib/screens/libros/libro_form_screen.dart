@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../models/libro.dart';
 import '../../services/api_service.dart';
 
@@ -22,6 +25,10 @@ class _LibroFormScreenState extends State<LibroFormScreen> {
   late TextEditingController _editorialController;
   late TextEditingController _descripcionController;
   late TextEditingController _imagenController;
+
+  File? _selectedImage;
+  String _imageSource = 'url'; // 'url' or 'device'
+  final ImagePicker _picker = ImagePicker();
 
   bool _isLoading = false;
   bool get _isEditing => widget.libro != null;
@@ -56,12 +63,51 @@ class _LibroFormScreenState extends State<LibroFormScreen> {
     super.dispose();
   }
 
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? image = await _picker.pickImage(
+        source: source,
+        maxWidth: 800, // Optimización de tamaño
+        imageQuality: 85,
+      );
+
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+          _imagenController.text = image.path; // Solo para validación no vacía
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al seleccionar imagen: $e')),
+      );
+    }
+  }
+
+  Future<String?> _processImage() async {
+    if (_imageSource == 'url') {
+      return _imagenController.text.trim().isNotEmpty
+          ? _imagenController.text.trim()
+          : null;
+    } else {
+      if (_selectedImage != null) {
+        List<int> imageBytes = await _selectedImage!.readAsBytes();
+        String base64Image = base64Encode(imageBytes);
+        // Detectar tipo de imagen (asumimos jpeg/png por ahora)
+        return 'data:image/jpeg;base64,$base64Image';
+      }
+      return null;
+    }
+  }
+
   Future<void> _guardar() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
     try {
+      final String? imagenProcesada = await _processImage();
+
       final libro = Libro(
         id: widget.libro?.id,
         titulo: _tituloController.text.trim(),
@@ -70,9 +116,7 @@ class _LibroFormScreenState extends State<LibroFormScreen> {
         anioPublicacion: int.tryParse(_anioController.text.trim()),
         editorial: _editorialController.text.trim(),
         descripcion: _descripcionController.text.trim(),
-        imagen: _imagenController.text.trim().isNotEmpty
-            ? _imagenController.text.trim()
-            : null,
+        imagen: imagenProcesada,
       );
 
       if (_isEditing) {
@@ -239,26 +283,100 @@ class _LibroFormScreenState extends State<LibroFormScreen> {
             ),
             const SizedBox(height: 16),
 
-            // URL de imagen
-            TextFormField(
-              controller: _imagenController,
-              decoration: InputDecoration(
-                labelText: 'URL de Imagen',
-                prefixIcon: const Icon(Icons.image),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+            // Selector de tipo de imagen
+            Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: const Text('URL'),
+                    value: 'url',
+                    groupValue: _imageSource,
+                    onChanged: (value) {
+                      setState(() {
+                        _imageSource = value!;
+                        if (_selectedImage != null) {
+                          _selectedImage = null;
+                          _imagenController.clear();
+                        }
+                      });
+                    },
+                  ),
                 ),
-                hintText: 'https://ejemplo.com/imagen.jpg',
-              ),
-              keyboardType: TextInputType.url,
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: const Text('Dispositivo'),
+                    value: 'device',
+                    groupValue: _imageSource,
+                    onChanged: (value) {
+                      setState(() {
+                        _imageSource = value!;
+                        _imagenController.clear();
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
 
-            // previa de imagen
-            if (_imagenController.text.isNotEmpty)
+            // Input según fuente
+            if (_imageSource == 'url')
+              TextFormField(
+                controller: _imagenController,
+                decoration: InputDecoration(
+                  labelText: 'URL de Imagen',
+                  prefixIcon: const Icon(Icons.link),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  hintText: 'https://ejemplo.com/imagen.jpg',
+                ),
+                keyboardType: TextInputType.url,
+                onChanged: (value) => setState(() {}),
+              )
+            else
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => _pickImage(ImageSource.gallery),
+                      icon: const Icon(Icons.photo_library),
+                      label: const Text('Galería'),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => _pickImage(ImageSource.camera),
+                      icon: const Icon(Icons.camera_alt),
+                      label: const Text('Cámara'),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 16),
+
+            // Preview
+            if (_selectedImage != null)
               Container(
                 height: 200,
-                margin: const EdgeInsets.only(top: 8),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.file(
+                    _selectedImage!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )
+            else if (_imagenController.text.isNotEmpty && _imageSource == 'url')
+              Container(
+                height: 200,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(12),
@@ -268,10 +386,13 @@ class _LibroFormScreenState extends State<LibroFormScreen> {
                   child: Image.network(
                     _imagenController.text,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Center(
-                      child: Text(
-                        'URL de imagen inválida',
-                        style: TextStyle(color: Colors.grey),
+                    errorBuilder: (_, __, ___) => const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.broken_image, color: Colors.grey),
+                          Text('URL inválida', style: TextStyle(color: Colors.grey)),
+                        ],
                       ),
                     ),
                   ),

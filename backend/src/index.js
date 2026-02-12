@@ -25,7 +25,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(express.json({ limit: '10mb' }))
+app.use(express.json({ limit: '50mb' }))
 
 // Servir archivos estáticos (landing page y APK)
 app.use(express.static(path.join(__dirname, '../public')));
