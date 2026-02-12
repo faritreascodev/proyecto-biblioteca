@@ -73,7 +73,7 @@ class _MenuScreenState extends State<MenuScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // header
+            // HEADER
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24),
@@ -84,20 +84,29 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
               child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.white,
-                    child: ClipOval(
-                      child: Image.network(
-                        'https://img.freepik.com/premium-vector/orange-orange-logo-with-man-cloud-cloud-background_1226483-3761.jpg',
-                        width: 90,
-                        height: 90,
-                        fit: BoxFit.cover,
-                      ),
+                  // ICONO ADMIN
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 8,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.admin_panel_settings,
+                      size: 50,
+                      color: Colors.blue.shade700,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
+                  const Text(
                     'Menú Administrador',
                     style: TextStyle(
                       fontSize: 24,
@@ -107,18 +116,17 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   Text(
                     'Usuario: $_username',
-                    style: TextStyle(fontSize: 18, color: Colors.white70),
+                    style: const TextStyle(fontSize: 18, color: Colors.white70),
                   ),
                 ],
               ),
             ),
 
-            // opciones del menú
+            // OPCIONES DEL MENÚ
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  // Card Libros
                   _MenuCard(
                     title: 'Panel Libros',
                     subtitle: 'Gestione libros en biblioteca',
@@ -134,8 +142,6 @@ class _MenuScreenState extends State<MenuScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
-
-                  // Card Estudiantes
                   _MenuCard(
                     title: 'Panel Estudiantes',
                     subtitle: 'Administre a los estudiantes',
@@ -160,7 +166,7 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 }
 
-// base de cards del menú
+// BASE DE LAS CARDS DEL MENÚ
 class _MenuCard extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -203,7 +209,7 @@ class _MenuCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),

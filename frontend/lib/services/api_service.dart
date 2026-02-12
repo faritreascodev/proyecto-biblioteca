@@ -5,7 +5,8 @@ import '../models/estudiante.dart';
 import 'auth_service.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://10.0.2.2:3000/api';
+  // static const String baseUrl = 'http://10.0.2.2:3000/api';
+  static const String baseUrl = 'https://proyecto-biblioteca-production.up.railway.app/api';
   final AuthService _authService = AuthService();
 
   // paso de headers con autenticación

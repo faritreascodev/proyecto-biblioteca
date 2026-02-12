@@ -6,7 +6,8 @@ class AuthService {
   // Emulador Android: http://10.0.2.2:3000
   // Dispositivo físico: http://laIP:3000
   // iOS Simulator: http://localhost:3000
-  static const String baseUrl = 'http://10.0.2.2:3000/api';
+  // static const String baseUrl = 'http://10.0.2.2:3000/api';
+  static const String baseUrl = 'https://proyecto-biblioteca-production.up.railway.app/api';
 
   // pantalla login
   Future<Map<String, dynamic>> login(String username, String password) async {
